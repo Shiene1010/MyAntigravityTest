@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>putOptionTrade - 풋옵션 트레이딩 서바이벌</title>
+    <!-- 폰트: 미래적인 느낌의 Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- K-브로커 마진콜 오버레이 (숨김 상태) -->
+    <div id="margin-call-overlay" class="hidden">
+        <div class="sms-alert">
+            <h3>[웹발신] 긴급 알림</h3>
+            <p>OOO고객님, 해외선물 위탁증거금이 부족(Margin Call)합니다.</p>
+            <p class="alert-red">오후 12:00까지 추가 납입 요망.</p>
+            <p>미납 시 강제 청산(반대매매) 됩니다.</p>
+            <button id="btn-close-sms">확인(입금하러 가기)</button>
+        </div>
+    </div>
+
+    <!-- 메인 대시보드 -->
+    <div class="dashboard-wrapper">
+        
+        <!-- 헤더: 환율 정보 -->
+        <header class="top-nav glass-panel">
+            <div class="logo">PUT<strong>OPTION</strong>SURVIVAL</div>
+            <div class="exchange-rate">
+                실시간 환율: 1 USD = <span id="krw-rate">1,400</span> KRW
+            </div>
+            <div class="controls">
+                <button id="test-margin-call" class="btn-warning">테스트: 마진콜 발생</button>
+            </div>
+        </header>
+
+        <!-- 메인 그리드 레이아웃 -->
+        <main class="grid-container">
+            
+            <!-- 포트폴리오 상태 (수익/손실) -->
+            <section class="portfolio-section glass-panel">
+                <h2 class="section-title">나의 계좌 상태</h2>
+                <div class="balance-card">
+                    <p class="label">현재 평가손익 (P&L)</p>
+                    <h1 class="value-usd loss" id="pl-usd">-$20,000.00</h1>
+                    <h3 class="value-krw loss" id="pl-krw">(약 -28,000,000 원)</h3>
+                </div>
+                <div class="balance-details">
+                    <div class="detail-item">
+                        <span>초기 증거금</span>
+                        <span>$50,000</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>유지 증거금율</span>
+                        <span class="loss">30% (위험)</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>수수료/세금(예상)</span>
+                        <span>-$50 / -$9,900</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 주문 및 그릭스(Greeks) 호가창 -->
+            <section class="order-section glass-panel">
+                <h2 class="section-title">WTI 원유 95$ 풋옵션</h2>
+                
+                <div class="greeks-box">
+                    <div class="greek-item">
+                        <span class="greek-name">델타 (Delta)</span>
+                        <span class="greek-val">-0.45</span>
+                        <div class="gauge-bar"><div class="fill" style="width: 45%; background: var(--neon-profit);"></div></div>
+                    </div>
+                    <div class="greek-item">
+                        <span class="greek-name">세타 (Theta) : 시간가치 소멸</span>
+                        <span class="greek-val loss">-0.08 / day</span>
+                        <div class="gauge-bar"><div class="fill" style="width: 80%; background: var(--neon-loss);"></div></div>
+                    </div>
+                </div>
+
+                <div class="order-book">
+                    <p class="multiplier-info">💡 1계약 = 1,000 배럴 (레버리지 1,000배)</p>
+                    <div class="order-controls">
+                        <button class="btn-buy">매수 (Buy Put)</button>
+                        <button class="btn-sell">매도 (Sell Put)</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 실시간 뉴스 플로우 (찌라시) -->
+            <section class="news-section glass-panel">
+                <h2 class="section-title">실시간 시장 정보</h2>
+                <div class="news-ticker">
+                    <div class="news-item urgent">
+                        <span class="time">11:05</span>
+                        <span class="tag">속보</span>
+                        <p>트럼프, 이란 폭격 관련 "협상" 단어 언급... 유가 -5% 급락</p>
+                    </div>
+                    <div class="news-item rumor">
+                        <span class="time">11:03</span>
+                        <span class="tag">X(트위터)</span>
+                        <p>@oil_trader99: 방금 골프장 이동 화면 잡힘. 폭격 보류 확실함 숏 쳐라</p>
+                    </div>
+                    <div class="news-item normal">
+                        <span class="time">11:00</span>
+                        <span class="tag">블룸버그</span>
+                        <p>WTI 원유 재고 발표 임박...</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- 오디오 엘리먼트 (마진콜용 심장박동) -->
+    <audio id="heartbeat-snd" loop>
+        <source src="https://assets.mixkit.co/active_storage/sfx/228/228-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

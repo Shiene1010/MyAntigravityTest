@@ -1,0 +1,180 @@
+/* CSS Variables for Cyberpunk & Glassmorphism Theme */
+:root {
+    --bg-core: #0A0B10;
+    --bg-glass: rgba(18, 20, 29, 0.65);
+    --bg-glass-border: rgba(255, 255, 255, 0.08);
+    
+    --neon-profit: #00FF9D;
+    --neon-loss: #FF0055;
+    --neon-warning: #FFB800;
+    --neon-info: #00E5FF;
+    
+    --text-primary: #FFFFFF;
+    --text-secondary: #8B92A5;
+    
+    --backdrop-blur: blur(16px);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-core);
+    /* 사이버펑크 스타일의 희미한 그리드 배경 */
+    background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+/* Glassmorphism Panel Base */
+.glass-panel {
+    background: var(--bg-glass);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--bg-glass-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+}
+
+.dashboard-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo strong {
+    color: var(--neon-profit);
+    text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+}
+
+.exchange-rate {
+    color: var(--neon-info);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* Main Grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--bg-glass-border);
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Typography styles */
+.loss { color: var(--neon-loss); text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); }
+.profit { color: var(--neon-profit); text-shadow: 0 0 10px rgba(0, 255, 157, 0.4); }
+
+.balance-card {
+    text-align: center;
+    padding: 30px 0;
+}
+.balance-card h1 { font-size: 3rem; margin: 10px 0; }
+.balance-card h3 { font-size: 1.2rem; font-weight: 300; margin: 0; opacity: 0.8; }
+
+.balance-details {
+    margin-top: 20px;
+    border-top: 1px solid var(--bg-glass-border);
+    padding-top: 20px;
+}
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Greeks Gauge */
+.greeks-box { margin-bottom: 30px; }
+.greek-item { margin-bottom: 15px; }
+.greek-name { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px; }
+.greek-val { font-size: 1.1rem; font-weight: 600; float: right; margin-top: -22px; }
+.gauge-bar {
+    width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;
+}
+.gauge-bar .fill { height: 100%; border-radius: 3px; }
+
+/* Order Controls */
+.multiplier-info { font-size: 0.8rem; color: var(--neon-warning); text-align: center; margin-bottom: 15px; }
+.order-controls { display: flex; gap: 10px; }
+.btn-buy, .btn-sell, .btn-warning {
+    flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+    font-family: 'Outfit', sans-serif; font-size: 1rem; transition: 0.3s;
+}
+.btn-buy { background: rgba(0, 255, 157, 0.1); color: var(--neon-profit); border: 1px solid var(--neon-profit); }
+.btn-buy:hover { background: var(--neon-profit); color: var(--bg-core); box-shadow: 0 0 20px rgba(0, 255, 157, 0.4); }
+
+.btn-sell { background: rgba(255, 0, 85, 0.1); color: var(--neon-loss); border: 1px solid var(--neon-loss); }
+.btn-sell:hover { background: var(--neon-loss); color: var(--bg-core); box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
+
+.btn-warning { background: var(--neon-warning); color: #000; }
+
+/* News Ticker */
+.news-item {
+    padding: 15px; background: rgba(0,0,0,0.3); border-left: 3px solid var(--text-secondary);
+    border-radius: 0 8px 8px 0; margin-bottom: 15px;
+}
+.news-item p { margin: 5px 0 0 0; font-size: 0.9rem; line-height: 1.4; }
+.news-item .time { font-size: 0.8rem; color: var(--text-secondary); margin-right: 10px; }
+.news-item.urgent { border-left-color: var(--neon-loss); }
+.news-item.urgent .tag { background: rgba(255,0,85,0.2); color: var(--neon-loss); padding: 2px 6px; border-radius: 4px; font-size: 0.7rem;}
+.news-item.rumor { border-left-color: var(--neon-warning); }
+.news-item.rumor .tag { background: rgba(255,184,0,0.2); color: var(--neon-warning); padding: 2px 6px; border-radius: 4px; font-size: 0.7rem;}
+
+/* Margin Call Simulation (SMS UI) */
+#margin-call-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(255, 0, 85, 0.15);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.3s;
+}
+#margin-call-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.sms-alert {
+    background: #FFEBEE; color: #333; width: 320px; border-radius: 16px; padding: 25px;
+    box-shadow: 0 20px 50px rgba(255, 0, 85, 0.5);
+    font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+}
+.sms-alert h3 { margin-top: 0; color: #D32F2F; border-bottom: 1px solid #ffcdd2; padding-bottom: 10px; }
+.sms-alert p { font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px; }
+.alert-red { color: #D32F2F; font-weight: bold; }
+.sms-alert button {
+    width: 100%; padding: 12px; margin-top: 15px; background: #D32F2F; color: white;
+    border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+}
+
+/* Pulsing Red Animation for Margin Call State */
+.danger-pulse-bg {
+    animation: danger-pulse 1s infinite alternate;
+}
+@keyframes danger-pulse {
+    0% { box-shadow: inset 0 0 0px 0px rgba(255, 0, 85, 0); }
+    100% { box-shadow: inset 0 0 100px 20px rgba(255, 0, 85, 0.4); }
+}
