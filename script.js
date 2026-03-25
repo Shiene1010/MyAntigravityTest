@@ -4,7 +4,7 @@ const EXCHANGE_RATE = 1400;
 // Initial Game State
 let gameState = {
     wtiPrice: 100.0,
-    timeRemaining: 30, // 30 seconds game loop
+    timeRemaining: 15, // 15 seconds game loop
     position: 'NONE', // 'NONE', 'BUY', 'SELL'
     premiumPaidOrReceived: 0,
     contracts: 10,
@@ -15,6 +15,8 @@ let gameState = {
 
 // DOM Elements
 const elTimer = document.getElementById("timer-display");
+const elTimerBar = document.getElementById("timer-bar");
+const elTimerCtx = document.getElementById("timer-container");
 const elPlUsd = document.getElementById("pl-usd");
 const elPlKrw = document.getElementById("pl-krw");
 const elPosStr = document.getElementById("current-position");
@@ -52,11 +54,19 @@ function enterPosition(type) {
         elPosStr.style.color = "var(--neon-loss)";
     }
 
-    // Disable buttons
+    // Disable buttons visibly
     document.getElementById("btn-buy").disabled = true;
+    document.getElementById("btn-buy").style.opacity = "0.3";
     document.getElementById("btn-sell").disabled = true;
+    document.getElementById("btn-sell").style.opacity = "0.3";
 
-    addNews("System", "안내", `완벽합니다. 포지션을 잡았습니다. 이제 시장의 반응을 지켜봅시다.`);
+    // Visual Flash Feedback on Portfolio
+    const portfolioBox = document.querySelector(".portfolio-section");
+    portfolioBox.classList.remove("flash-highlight");
+    void portfolioBox.offsetWidth; // trigger reflow
+    portfolioBox.classList.add("flash-highlight");
+
+    addNews("System", "체결", `완벽합니다. ${type === 'BUY' ? '풋 매수' : '풋 매도'}가 체결되었습니다. 결과를 지켜보세요.`, "urgent");
 }
 
 function startGame() {
@@ -69,22 +79,28 @@ function gameTick() {
 
     gameState.timeRemaining--;
     elTimer.innerText = gameState.timeRemaining;
+    elTimerBar.style.width = `${(gameState.timeRemaining / 15) * 100}%`;
+
+    if (gameState.timeRemaining <= 3) {
+        elTimerCtx.classList.add("urgent-blink");
+        elTimerBar.style.background = "var(--neon-loss)";
+    }
 
     // Simulate Time Decay (Theta)
-    let timeDecay = ((30 - gameState.timeRemaining) / 30) * 0.15;
+    let timeDecay = ((15 - gameState.timeRemaining) / 15) * 0.15;
     thetaVal.innerText = "-" + timeDecay.toFixed(2);
     thetaBar.style.width = `${Math.min(100, (timeDecay / 0.15) * 100)}%`;
 
     // Random walk before the big event
-    if (gameState.timeRemaining > 10) {
+    if (gameState.timeRemaining > 5) {
         let noise = (Math.random() - 0.5) * 0.4;
         gameState.wtiPrice += noise;
 
-        if (gameState.timeRemaining === 25) addNews("11:03", "루머", "골프장 이동 포착? 이란 공격은 안할듯", "rumor");
-        if (gameState.timeRemaining === 15) addNews("11:05", "속보", "트럼프 공식 기자회견 시작", "urgent");
+        if (gameState.timeRemaining === 12) addNews("11:03", "루머", "골프장 이동 포착? 이란 공격은 안할듯", "rumor");
+        if (gameState.timeRemaining === 8) addNews("11:05", "속보", "트럼프 공식 기자회견 시작", "urgent");
     }
     // The Big Event! WTI crashes
-    else if (gameState.timeRemaining === 10) {
+    else if (gameState.timeRemaining === 5) {
         gameState.wtiPrice -= 15.0; // Huge drop to ~$85
         addNews("11:10", "긴급", "폭격 보류 선명! 국제 유가 패닉 셀링 15% 폭락!!", "urgent");
         deltaVal.innerText = "-0.95";
@@ -201,9 +217,13 @@ function addNews(time, tag, text, cssClass = "normal") {
 
 function resetGame() {
     clearInterval(gameState.timerInterval);
-    gameState = { wtiPrice: 100.0, timeRemaining: 30, position: 'NONE', premiumPaidOrReceived: 0, contracts: 10, multiplier: 1000, isActive: false, timerInterval: null };
+    gameState = { wtiPrice: 100.0, timeRemaining: 15, position: 'NONE', premiumPaidOrReceived: 0, contracts: 10, multiplier: 1000, isActive: false, timerInterval: null };
 
-    elTimer.innerText = "30";
+    elTimer.innerText = "15";
+    elTimerBar.style.width = "100%";
+    elTimerBar.style.background = "var(--neon-warning)";
+    elTimerCtx.classList.remove("urgent-blink");
+
     elWti.innerText = "$100.00";
     elPlUsd.innerText = "$0.00";
     elPlUsd.className = "value-usd";
@@ -215,7 +235,10 @@ function resetGame() {
     elMargin.className = "";
 
     document.getElementById("btn-buy").disabled = false;
+    document.getElementById("btn-buy").style.opacity = "1";
     document.getElementById("btn-sell").disabled = false;
+    document.getElementById("btn-sell").style.opacity = "1";
+
     document.getElementById("game-over-overlay").classList.add("hidden");
     newsContainer.innerHTML = '';
 
