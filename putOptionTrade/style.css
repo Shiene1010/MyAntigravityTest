@@ -422,3 +422,63 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
+/* Responsive Design for Mobile Devices */
+@media screen and (max-width: 992px) {
+    .dashboard-wrapper {
+        height: auto;
+        padding: 10px;
+        padding-bottom: 15vh;
+        /* Space for sticky buttons */
+    }
+
+    .top-nav {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .timer {
+        font-size: 1.5rem !important;
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .balance-card h1 {
+        font-size: 2.2rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    /* Make overlays responsive */
+    .sms-alert,
+    .receipt-panel {
+        width: 90%;
+        max-width: 380px;
+        padding: 20px;
+    }
+
+    /* Sticky Bottom Bar for Trading on Mobile */
+    .mobile-action-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-glass);
+        backdrop-filter: var(--backdrop-blur);
+        -webkit-backdrop-filter: var(--backdrop-blur);
+        border-top: 1px solid var(--bg-glass-border);
+        padding: 15px;
+        display: flex;
+        gap: 10px;
+        z-index: 500;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    }
+}
